@@ -81,12 +81,12 @@ SELECT YEAR([InvoiceDate]) AS [YEAR]
 	,InvLin.[Description] AS [Description]
 	,SUM(InvLin.UnitPrice) AS [SUMPRICE]
 	,MIN([InvoiceDate]) AS [MINDATE]
-	,COUNT(1) AS [COUNT]
+	,sum([Quantity]) AS [COUNT]
   FROM [Sales].[Invoices] AS Inv
   JOIN [Sales].[InvoiceLines] AS InvLin
   ON Inv.InvoiceID = InvLin.InvoiceID
   GROUP BY [InvoiceDate], InvLin.[Description]
-  HAVING COUNT(1) < 50;
+  HAVING sum([Quantity]) < 50;
 
 -- ---------------------------------------------------------------------------
 -- Опционально
