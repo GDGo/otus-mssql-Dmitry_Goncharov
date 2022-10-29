@@ -1,0 +1,30 @@
+/*
+5. Десять последних продаж (по дате продажи) с именем клиента и именем сотрудника,
+который оформил заказ (SalespersonPerson).
+Сделать без подзапросов.
+*/
+
+SELECT TOP(10) [OrderID]
+	  ,Cus.CustomerName
+	  ,Peop.FullName
+      ,Orders.[CustomerID]
+      ,[SalespersonPersonID]
+      ,[PickedByPersonID]
+      ,[ContactPersonID]
+      ,[BackorderOrderID]
+      ,[OrderDate]
+      ,[ExpectedDeliveryDate]
+      ,[CustomerPurchaseOrderNumber]
+      ,[IsUndersupplyBackordered]
+      ,[Comments]
+      ,[DeliveryInstructions]
+      ,[InternalComments]
+      ,[PickingCompletedWhen]
+      ,Orders.[LastEditedBy]
+      ,[LastEditedWhen]
+  FROM [WideWorldImporters].[Sales].[Orders] AS Orders
+  JOIN [WideWorldImporters].[Sales].[Customers] AS Cus
+  ON Orders.CustomerID = Cus.CustomerID
+  JOIN [WideWorldImporters].[Application].[People] AS Peop
+  ON Orders.[SalespersonPersonID] = Peop.PersonID
+  ORDER BY [OrderDate] DESC
