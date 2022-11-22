@@ -76,17 +76,20 @@ SELECT YEAR([InvoiceDate]) AS [YEAR]
 Продажи смотреть в таблице Sales.Invoices и связанных таблицах.
 */
 
+USE [WideWorldImporters];
+GO
+
 SELECT YEAR([InvoiceDate]) AS [YEAR]
-	,MONTH([InvoiceDate]) AS [MONTH]
-	,InvLin.[Description] AS [Description]
-	,SUM(InvLin.UnitPrice) AS [SUMPRICE]
-	,MIN([InvoiceDate]) AS [MINDATE]
-	,sum([Quantity]) AS [COUNT]
-  FROM [Sales].[Invoices] AS Inv
-  JOIN [Sales].[InvoiceLines] AS InvLin
-  ON Inv.InvoiceID = InvLin.InvoiceID
-  GROUP BY [InvoiceDate], InvLin.[Description]
-  HAVING sum([Quantity]) < 50;
+	  ,MONTH([InvoiceDate]) AS [MONTH]
+	  ,OrderLines.Description AS [NAMESTOCKITEM]
+	  ,SUM([UnitPrice]) AS [PRICE]
+	  ,MIN([PickingCompletedWhen]) AS [DATEFIRSTSALE]
+	  ,SUM([Quantity]) AS [COUNT]
+  FROM [Sales].[Invoices] as Invoices
+  JOIN [Sales].[OrderLines] AS OrderLines
+  ON Invoices.OrderID = OrderLines.OrderID
+  GROUP BY YEAR([InvoiceDate]), MONTH([InvoiceDate]), OrderLines.Description
+  HAVING SUM([Quantity]) < 50;
 
 -- ---------------------------------------------------------------------------
 -- Опционально
